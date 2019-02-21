@@ -1,4 +1,5 @@
 ﻿using MyWebShop.Core;
+using MyWebShop.Core.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyWebShop.DataAccess.InMemory
 {
-    public class InMemoryReository<T> where T : BaseEntity
+    public class InMemoryReository<T> : IReository<T> where T : BaseEntity
     {
         ObjectCache cache = MemoryCache.Default;
         List<T> items;
@@ -28,7 +29,7 @@ namespace MyWebShop.DataAccess.InMemory
         {
             cache[className] = items;
         }
-
+           
         public void Insert(T t)
         {
             items.Add(t);
