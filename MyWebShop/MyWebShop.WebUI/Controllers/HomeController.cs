@@ -1,5 +1,6 @@
 ﻿using MyWebShop.Core.Contracts;
 using MyWebShop.Core.Models;
+using MyWebShop.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,28 @@ namespace MyWebShop.WebUI.Controllers
             productCategories = productCategoryContext;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string Category = null)
         {
-            List<Product> product = context.Collection().ToList();
-            return View(product);
+            List<Product> products;
+            List<ProductCategory> categories = productCategories.Collection().ToList();
+
+            if(Category == null)
+            {
+                products = context.Collection().ToList();
+            }
+            else
+            {
+                products = context.Collection().Where(p => p.Category == Category).ToList();
+            }
+
+            ProductListViewModel model = new ProductListViewModel
+            {
+                Product = products,
+                ProductCategories = categories
+            };
+
+            return View(model);
+
         }
 
         public ActionResult Details(string Id)
